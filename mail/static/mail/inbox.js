@@ -60,22 +60,19 @@ function submit_mail() {
   })
     .then(response => {
       return response.json().then(data => ({
-        status: response.status,
+        ok: response.ok,
         body: data
       }))
     })
     .then(result => {
-      // console.log(result)
-      // console.log(result.status)
-      // console.log(result.body.message)
+      console.log(result)
+      // console.log(result.ok)
+      console.log(result.body.message)
 
       const alert = document.querySelector("[role='alert']");
       alert.style.display = "block";
 
-      if (result.status !== 201) {
-        alert.setAttribute('class', 'alert alert-danger')
-        alert.innerHTML = `Error: ${result.body.error}`
-      } else {
+      if (result.ok) {
         alert.setAttribute('class', 'alert alert-success')
         alert.innerHTML = `${result.body.message}`
 
@@ -83,6 +80,10 @@ function submit_mail() {
           alert.style.display = 'none';
           load_mailbox('inbox');
         }, 2000);
+
+      } else {
+        alert.setAttribute('class', 'alert alert-danger')
+        alert.innerHTML = `Error: ${result.body.error}`
       }
 
     })
