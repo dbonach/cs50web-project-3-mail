@@ -25,6 +25,9 @@ def index(request):
 @login_required
 def compose(request):
 
+    # print(request.body)
+    # print(json.loads(request.body)['recipients'])
+
     # Composing a new email must be via POST
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
