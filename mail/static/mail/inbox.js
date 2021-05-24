@@ -49,6 +49,9 @@ function submit_mail() {
 
   fetch('/emails', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
     body: JSON.stringify({
       recipients: recipients,
       subject: subject,
