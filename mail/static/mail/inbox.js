@@ -38,8 +38,11 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
     .then(response => response.json())
     .then(result => {
-      create_mail_element(result);
+      create_shortMail_element(result);
     })
+    .catch(error => {
+      console.log('Error:', error);
+    });
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -102,7 +105,7 @@ function submit_mail() {
   return false
 }
 
-function create_mail_element(result) {
+function create_shortMail_element(result) {
   let element = ''
 
   for (let email in result) {
