@@ -33,6 +33,14 @@ function load_mailbox(mailbox) {
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
 
+  // console.log(`/emails/${mailbox}`)
+
+  fetch(`/emails/${mailbox}`)
+    .then(response => response.json())
+    .then(result => {
+      create_mail_element(result);
+    })
+
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 }
@@ -92,4 +100,20 @@ function submit_mail() {
     });
 
   return false
+}
+
+function create_mail_element(result) {
+  let element = ''
+
+  for (let email in result) {
+    element += `
+      <div class="email-line ${result[email].read ? '' : 'unread'}">
+      <span style="font-weight: bold; display: inline-block; min-width: 6rem;">${result[email].sender}</span>
+      <span style="margin-left: 1rem;">${result[email].subject}</span>
+      <span style="float: right;">${result[email].timestamp}</span>
+      </div>
+    `;
+  }
+
+  document.querySelector('#emails-view').innerHTML += element
 }
