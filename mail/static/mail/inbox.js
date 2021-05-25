@@ -106,17 +106,30 @@ function submit_mail() {
 }
 
 function create_shortMail_element(result) {
-  let element = ''
+  let div = document.createElement('div')
 
   for (let email in result) {
-    element += `
-      <div class="email-line ${result[email].read ? '' : 'unread'}">
-      <span style="font-weight: bold; display: inline-block; min-width: 6rem;">${result[email].sender}</span>
-      <span style="margin-left: 1rem;">${result[email].subject}</span>
-      <span style="float: right;">${result[email].timestamp}</span>
-      </div>
-    `;
+    let div_email = document.createElement('div')
+    div_email.setAttribute('class', `email-line ${result[email].read ? '' : 'unread'}`)
+
+    let span_sender = document.createElement('span')
+    span_sender.setAttribute('class', 'span-sender')
+    span_sender.textContent = result[email].sender
+
+    let span_subject = document.createElement('span')
+    span_subject.setAttribute('class', 'span-subject')
+    span_subject.textContent = result[email].subject
+
+    let span_timestamp = document.createElement('span')
+    span_timestamp.setAttribute('class', 'span-timestamp')
+    span_timestamp.textContent = result[email].timestamp
+
+
+    div_email.append(span_sender)
+    div_email.append(span_subject)
+    div_email.append(span_timestamp)
+    div.append(div_email)
   }
 
-  document.querySelector('#emails-view').innerHTML += element
+  document.querySelector('#emails-view').append(div);
 }
