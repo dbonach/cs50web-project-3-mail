@@ -5,6 +5,27 @@ textarea {
 .email-line {
   border-bottom: 1px solid #ddd;
   padding: 4px;
+  display: flex;
+  align-items: center;
+  min-width: 200px;
+
+  .span-sender {
+    font-weight: bold;
+    display: inline-block;
+    min-width: 6rem;
+  }
+  
+  .span-subject {
+    margin-left: 1rem;
+  }
+  
+  .span-timestamp {
+    // float: right;
+    font-size: .75rem;
+    margin-left: auto;
+    min-width: fit-content;
+    color: #555;
+  }
 }
 
 .email-line:hover {
