@@ -17,6 +17,7 @@ function compose_email() {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#show-email').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
@@ -32,6 +33,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#show-email').style.display = 'none';
 
   // console.log(`/emails/${mailbox}`)
 
@@ -111,6 +113,7 @@ function create_shortMail_element(result) {
   for (let email in result) {
     let div_email = document.createElement('div')
     div_email.setAttribute('class', `email-line ${result[email].read ? '' : 'unread'}`)
+    div_email.addEventListener('click', () => show_email(result[email].id));
 
     let span_sender = document.createElement('span')
     span_sender.setAttribute('class', 'span-sender')
@@ -132,4 +135,62 @@ function create_shortMail_element(result) {
   }
 
   document.querySelector('#emails-view').append(div);
+}
+
+function show_email(id) {
+
+  fetch(`emails/${id}`)
+    .then(response => response.json())
+    .then(result => {
+      create_fullEmail_element(result);
+    })
+    .catch(error => {
+      console.log('Error:', error);
+    });
+}
+
+function create_fullEmail_element(result) {
+  div_show_email = document.querySelector('#show-email')
+  div_show_email.innerHTML = ''
+
+  let div_email = document.createElement('div')
+
+  // Sender and timestamp
+  let div_email_info = document.createElement('div')
+  div_email_info.setAttribute('class', 'email-info')
+
+  let span_sender = document.createElement('span')
+  span_sender.setAttribute('class', 'email-sender')
+  span_sender.textContent = result.sender
+
+  let span_timestamp = document.createElement('span')
+  span_timestamp.setAttribute('class', 'span-timestamp')
+  span_timestamp.textContent = result.timestamp
+
+  div_email_info.append(span_sender)
+  div_email_info.append(span_timestamp)
+
+  // Subject
+  let div_subject = document.createElement('div')
+  div_subject.setAttribute('class', 'div-email-subject')
+
+  let span_subject = document.createElement('span')
+  span_subject.textContent = result.subject
+
+  div_subject.append(span_subject)
+
+  // Body
+  let div_body = document.createElement('div')
+  div_body.setAttribute('class', 'div-body')
+  div_body.textContent = result.body
+
+  // Append all
+  div_email.append(div_email_info)
+  div_email.append(div_subject)
+  div_email.append(div_body)
+
+  div_show_email.append(div_email)
+
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#show-email').style.display = 'block';
 }

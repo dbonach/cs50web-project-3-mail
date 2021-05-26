@@ -18,14 +18,13 @@ textarea {
   .span-subject {
     margin-left: 1rem;
   }
-  
-  .span-timestamp {
-    // float: right;
-    font-size: .75rem;
-    margin-left: auto;
-    min-width: fit-content;
-    color: #555;
-  }
+}
+
+.span-timestamp {
+  font-size: .75rem;
+  margin-left: auto;
+  min-width: fit-content;
+  color: #555;
 }
 
 .email-line:hover {
@@ -33,6 +32,7 @@ textarea {
   box-shadow: 0px 0px 4px 2px #ccc;
   position: relative;
   z-index: 1;
+  cursor: pointer;
 }
 
 .unread {
@@ -41,4 +41,35 @@ textarea {
 
 .unread:hover {
   border-bottom: 1px solid #eee;
+}
+
+#show-email {
+  border: 2px solid;
+  border-radius: 4px;
+  padding: 6px;
+  min-height: 8rem;
+  border-color: darkkhaki;
+  // max-width: 80%;
+  // margin: auto;
+
+  .email-info {
+    display: flex;
+  }
+
+  .email-sender {
+    font-size: .75rem;
+    min-width: fit-content;
+    color: #555;
+  }
+
+  .div-email-subject {
+    font-size: 1.25rem;
+    // font-weight: bold;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .div-body {
+    font-size: 14px;
+    margin-top: 0.75rem;
+  }
 }
