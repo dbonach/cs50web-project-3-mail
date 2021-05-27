@@ -8,18 +8,20 @@ textarea {
   display: flex;
   align-items: center;
   min-width: 200px;
-}
-.email-line .span-sender {
-  font-weight: bold;
-  display: inline-block;
-  min-width: 6rem;
-}
-.email-line .span-subject {
-  margin-left: 1rem;
+
+  .span-sender {
+    font-weight: bold;
+    display: inline-block;
+    min-width: 6rem;
+  }
+  
+  .span-subject {
+    margin-left: 1rem;
+  }
 }
 
 .span-timestamp {
-  font-size: 0.75rem;
+  font-size: .75rem;
   margin-left: auto;
   min-width: fit-content;
   color: #555;
@@ -47,26 +49,32 @@ textarea {
   padding: 6px;
   min-height: 8rem;
   border-color: darkkhaki;
-}
-#show-email .email-info {
-  display: flex;
-}
-#show-email .email-sender {
-  font-size: 0.75rem;
-  min-width: fit-content;
-  color: #555;
-}
-#show-email .div-email-subject {
-  font-size: 1.25rem;
-  border-bottom: 1px solid #ddd;
-}
-#show-email .div-body {
-  font-size: 14px;
-  margin-top: 0.75rem;
-}
-#show-email .archive-btn {
-  display: flex;
-  justify-content: flex-end;
-}
+  // max-width: 80%;
+  // margin: auto;
 
-/*# sourceMappingURL=styles.css.map */
+  .email-info {
+    display: flex;
+  }
+
+  .email-sender {
+    font-size: .75rem;
+    min-width: fit-content;
+    color: #555;
+  }
+
+  .div-email-subject {
+    font-size: 1.25rem;
+    // font-weight: bold;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .div-body {
+    font-size: 14px;
+    margin-top: 0.75rem;
+  }
+  
+  .archive-btn {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
