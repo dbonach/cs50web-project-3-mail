@@ -67,9 +67,11 @@ textarea {
   font-size: 14px;
   margin-top: 0.75rem;
 }
-#show-email .archive-btn {
+#show-email .email-btn {
   display: flex;
-  justify-content: flex-end;
+}
+#show-email .archive-btn {
+  margin-left: auto;
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -180,8 +180,10 @@ function create_fullEmail_element(result) {
     <span>${sanitize(result.subject)}</span>
   </div>
   <div class="div-body">${sanitize(result.body)}</div>
-  <div class="archive-btn mt-3">
-    <button class="btn btn-outline-secondary btn-sm"
+  <div class="email-btn mt-3">
+    ${result.archived ? '' : `<button class="btn btn-outline-secondary btn-sm">
+    Reply</button>`}
+    <button class="archive-btn btn btn-outline-secondary btn-sm"
     onClick="archive(${result.archived}, ${result.id})">
     ${result.archived ? 'Unarchive' : 'Archive'}
     </button>

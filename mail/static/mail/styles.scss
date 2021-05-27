@@ -78,8 +78,12 @@ textarea {
     margin-top: 0.75rem;
   }
   
-  .archive-btn {
+  .email-btn {
     display: flex;
-    justify-content: flex-end;
+    // justify-content: space-between;
+  }
+
+  .archive-btn {
+    margin-left: auto;
   }
 }
