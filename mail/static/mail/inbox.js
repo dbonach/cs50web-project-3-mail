@@ -143,10 +143,27 @@ function show_email(id) {
     .then(response => response.json())
     .then(result => {
       create_fullEmail_element(result);
+      if (!result.read) put_read();
     })
     .catch(error => {
       console.log('Error:', error);
     });
+
+  function put_read() {
+    fetch(`emails/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        read: 'True'
+      })
+    })
+      .catch(error => {
+        console.log('Error:', error);
+      });
+  }
+
 }
 
 function create_fullEmail_element(result) {
