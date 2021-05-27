@@ -1,3 +1,5 @@
+let timeout
+
 document.addEventListener('DOMContentLoaded', function () {
 
   // Use buttons to toggle between views
@@ -14,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function compose_email() {
   // Remove alert
   document.querySelector("[role='alert']").style.display = 'none';
+  clearTimeout(timeout)
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
@@ -29,6 +32,7 @@ function compose_email() {
 function load_mailbox(mailbox) {
   // Remove alert
   document.querySelector("[role='alert']").style.display = 'none';
+  clearTimeout(timeout)
 
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
@@ -78,10 +82,6 @@ function submit_mail() {
       }))
     })
     .then(result => {
-      console.log(result)
-      // console.log(result.ok)
-      console.log(result.body.message)
-
       const alert = document.querySelector("[role='alert']");
       alert.style.display = "block";
 
@@ -89,8 +89,7 @@ function submit_mail() {
         alert.setAttribute('class', 'alert alert-success')
         alert.innerHTML = `${result.body.message}`
 
-        setTimeout(function () {
-          alert.style.display = 'none';
+        timeout = setTimeout(function () {
           load_mailbox('inbox');
         }, 2000);
 
@@ -180,6 +179,12 @@ function create_fullEmail_element(result) {
     <span>${sanitize(result.subject)}</span>
   </div>
   <div class="div-body">${sanitize(result.body)}</div>
+  <div class="archive-btn mt-3">
+    <button class="btn btn-outline-secondary btn-sm"
+    onClick="archive(${result.archived}, ${result.id})">
+    ${result.archived ? 'Unarchive' : 'Archive'}
+    </button>
+  </div>
   `;
 
   div_show_email.append(div_email)
@@ -192,4 +197,38 @@ function sanitize(string) {
   let div = document.createElement('div')
   div.textContent = string
   return div.innerText
+}
+
+function archive(bool, id) {
+
+  fetch(`emails/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify({
+      archived: !bool
+    })
+  })
+    .then(response => {
+      const alert = document.querySelector("[role='alert']");
+      alert.style.display = "block";
+
+      if (response.ok) {
+        alert.setAttribute('class', 'alert alert-success')
+        alert.innerHTML = bool ? 'Email unarchived' : 'Email archived'
+
+        timeout = setTimeout(function () {
+          load_mailbox('inbox');
+        }, 2000);
+
+      } else {
+        alert.setAttribute('class', 'alert alert-danger')
+        alert.innerHTML = bool ? 'Fail to unarchive email' : 'Fail to archive email'
+      }
+    })
+    .catch(error => {
+      console.log('Error:', error);
+    });
+
 }

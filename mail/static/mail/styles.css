@@ -64,5 +64,9 @@ textarea {
   font-size: 14px;
   margin-top: 0.75rem;
 }
+#show-email .archive-btn {
+  display: flex;
+  justify-content: flex-end;
+}
 
 /*# sourceMappingURL=styles.css.map */
