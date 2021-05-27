@@ -170,6 +170,7 @@ function create_fullEmail_element(result) {
   div_show_email.innerHTML = ''
 
   let div_email = document.createElement('div')
+  div_email.setAttribute('class', 'full-email')
   div_email.innerHTML = `
   <div class="email-info">
     <span class="email-sender">${result.sender}</span>

@@ -47,10 +47,15 @@ textarea {
   border: 2px solid;
   border-radius: 4px;
   padding: 6px;
-  min-height: 8rem;
+  // min-height: 8rem;
   border-color: darkkhaki;
   // max-width: 80%;
   // margin: auto;
+
+  .div_email {
+    display: flex;
+    flex-direction: column;
+  }
 
   .email-info {
     display: flex;
