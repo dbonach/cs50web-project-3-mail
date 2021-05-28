@@ -6,27 +6,39 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
-  document.querySelector('#compose').addEventListener('click', compose_email);
+  document.querySelector('#compose').addEventListener('click', () => compose_email());
   document.querySelector('#compose-form').onsubmit = submit_mail;
 
   // By default, load the inbox
   load_mailbox('inbox');
 });
 
-function compose_email() {
+function compose_email(email_id = null) {
   // Remove alert
   document.querySelector("[role='alert']").style.display = 'none';
   clearTimeout(timeout)
+  if (email_id) {
+    retrieve_full_email(email_id)
+      .then(response => {
+        document.querySelector('#compose-recipients').value = response.sender;
+        document.querySelector('#compose-subject').value = 'Re: ' +
+          response.subject.replace(/^Re:\s/, '');
+        document.querySelector('#compose-body').value = 'On ' +
+          `${response.timestamp} ${response.sender} wrote:\n"${response.body}"`;
+      })
+  } else {
+    // Clear out composition fields
+    document.querySelector('#compose-recipients').value = '';
+    document.querySelector('#compose-subject').value = '';
+    document.querySelector('#compose-body').value = ''
+  }
+
+  // console.log(body)
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#show-email').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
-
-  // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  // document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
 }
 
 function load_mailbox(mailbox) {
@@ -181,7 +193,8 @@ function create_fullEmail_element(result) {
   </div>
   <div class="div-body">${sanitize(result.body)}</div>
   <div class="email-btn mt-3">
-    ${result.archived ? '' : `<button class="btn btn-outline-secondary btn-sm">
+    ${result.archived ? '' : `<button class="btn btn-outline-secondary btn-sm"
+    onClick="compose_email(${result.id})">
     Reply</button>`}
     <button class="archive-btn btn btn-outline-secondary btn-sm"
     onClick="archive(${result.archived}, ${result.id})">
@@ -234,4 +247,9 @@ function archive(bool, id) {
       console.log('Error:', error);
     });
 
+}
+
+async function retrieve_full_email(email_id) {
+  const response = await fetch(`emails/${email_id}`);
+  return response.json()
 }
