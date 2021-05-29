@@ -45,8 +45,11 @@ textarea {
   border: 2px solid;
   border-radius: 4px;
   padding: 6px;
-  min-height: 8rem;
   border-color: darkkhaki;
+}
+#show-email .div_email {
+  display: flex;
+  flex-direction: column;
 }
 #show-email .email-info {
   display: flex;
@@ -64,9 +67,11 @@ textarea {
   font-size: 14px;
   margin-top: 0.75rem;
 }
-#show-email .archive-btn {
+#show-email .email-btn {
   display: flex;
-  justify-content: flex-end;
+}
+#show-email .archive-btn {
+  margin-left: auto;
 }
 
 /*# sourceMappingURL=styles.css.map */

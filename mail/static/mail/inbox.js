@@ -1,3 +1,4 @@
+// Added to reset timeout if needed
 let timeout
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -6,27 +7,48 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
-  document.querySelector('#compose').addEventListener('click', compose_email);
+  document.querySelector('#compose').addEventListener('click', () => compose_email());
   document.querySelector('#compose-form').onsubmit = submit_mail;
 
   // By default, load the inbox
   load_mailbox('inbox');
 });
 
-function compose_email() {
+function compose_email(email_id = null) {
   // Remove alert
   document.querySelector("[role='alert']").style.display = 'none';
   clearTimeout(timeout)
+
+  // Pre-fill fields if its a reply
+  if (email_id) {
+    retrieve_full_email(email_id)
+      .then(response => {
+        user_email = document.querySelector('#user-email').innerText;
+        let recipient_address = response.sender
+        if (user_email === response.sender) recipient_address = response.recipients;
+
+        document.querySelector('#compose-recipients').value = recipient_address;
+        document.querySelector('#compose-subject').value = 'Re: ' +
+          response.subject.replace(/^Re:\s/, '');
+        document.querySelector('#compose-body').value = 'On ' +
+          `${response.timestamp} ${response.sender} wrote: "${response.body}"`;
+      })
+  } else {
+    // Clear out composition fields
+    document.querySelector('#compose-recipients').value = '';
+    document.querySelector('#compose-subject').value = '';
+    document.querySelector('#compose-body').value = ''
+  }
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#show-email').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+}
 
-  // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  // document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
+async function retrieve_full_email(email_id) {
+  const response = await fetch(`emails/${email_id}`);
+  return response.json()
 }
 
 function load_mailbox(mailbox) {
@@ -34,13 +56,11 @@ function load_mailbox(mailbox) {
   document.querySelector("[role='alert']").style.display = 'none';
   clearTimeout(timeout)
 
-  // Show the mailbox and hide other views
-  document.querySelector('#emails-view').style.display = 'block';
-  document.querySelector('#compose-view').style.display = 'none';
-  document.querySelector('#show-email').style.display = 'none';
+  // Show the mailbox name
+  document.querySelector('#emails-view').innerHTML =
+    `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
-  // console.log(`/emails/${mailbox}`)
-
+  // Show all emails to the DOM
   fetch(`/emails/${mailbox}`)
     .then(response => response.json())
     .then(result => {
@@ -50,20 +70,24 @@ function load_mailbox(mailbox) {
       console.log('Error:', error);
     });
 
-  // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  // Show the mailbox and hide other views
+  document.querySelector('#emails-view').style.display = 'block';
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#show-email').style.display = 'none';
 }
 
 function submit_mail() {
 
-  let recipients = this.querySelector('#compose-recipients').value;
-  let subject = this.querySelector('#compose-subject').value;
-  let body = this.querySelector('#compose-body').value;
+  const recipients = this.querySelector('#compose-recipients').value;
+  const subject = this.querySelector('#compose-subject').value;
+  const body = this.querySelector('#compose-body').value;
 
+  // Do nothing if the body is empty and the user doesn't confirm
   if (!body && !confirm("Send this message without a subject or text in the body?")) {
     return false;
   }
 
+  // POST email and show alert
   fetch('/emails', {
     method: 'POST',
     headers: {
@@ -82,6 +106,7 @@ function submit_mail() {
       }))
     })
     .then(result => {
+      // Show alert
       const alert = document.querySelector("[role='alert']");
       alert.style.display = "block";
 
@@ -106,6 +131,7 @@ function submit_mail() {
   return false
 }
 
+// Append email previews to the DOM
 function create_shortMail_element(result) {
   let div = document.createElement('div')
 
@@ -136,12 +162,14 @@ function create_shortMail_element(result) {
   document.querySelector('#emails-view').append(div);
 }
 
+// Fetch complete email and call function to show it
 function show_email(id) {
-
   fetch(`emails/${id}`)
     .then(response => response.json())
     .then(result => {
       create_fullEmail_element(result);
+
+      // Mark email as read after load it
       if (!result.read) put_read();
     })
     .catch(error => {
@@ -170,6 +198,7 @@ function create_fullEmail_element(result) {
   div_show_email.innerHTML = ''
 
   let div_email = document.createElement('div')
+  div_email.setAttribute('class', 'full-email')
   div_email.innerHTML = `
   <div class="email-info">
     <span class="email-sender">${result.sender}</span>
@@ -179,10 +208,13 @@ function create_fullEmail_element(result) {
     <span>${sanitize(result.subject)}</span>
   </div>
   <div class="div-body">${sanitize(result.body)}</div>
-  <div class="archive-btn mt-3">
-    <button class="btn btn-outline-secondary btn-sm"
-    onClick="archive(${result.archived}, ${result.id})">
-    ${result.archived ? 'Unarchive' : 'Archive'}
+  <div class="email-btn mt-3">
+    ${(result.archived) ? '' :
+      `<button class="btn btn-outline-secondary btn-sm"
+      onClick="compose_email(${result.id})">Reply</button>`}
+    <button class="archive-btn btn btn-outline-secondary btn-sm"
+      onClick="archive(${result.archived}, ${result.id})">
+      ${result.archived ? 'Unarchive' : 'Archive'}
     </button>
   </div>
   `;
@@ -199,6 +231,7 @@ function sanitize(string) {
   return div.innerText
 }
 
+// Perform (un)archive and show message alert
 function archive(bool, id) {
 
   fetch(`emails/${id}`, {
