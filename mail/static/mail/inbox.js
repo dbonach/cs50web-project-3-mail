@@ -1,3 +1,4 @@
+// Added to reset timeout if needed
 let timeout
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -20,11 +21,16 @@ function compose_email(email_id = null) {
   if (email_id) {
     retrieve_full_email(email_id)
       .then(response => {
-        document.querySelector('#compose-recipients').value = response.sender;
+        user_email = document.querySelector('#user-email').innerText;
+        let address = response.sender
+        if (user_email === response.sender) address = response.recipients;
+        console.log(address)
+
+        document.querySelector('#compose-recipients').value = address;
         document.querySelector('#compose-subject').value = 'Re: ' +
           response.subject.replace(/^Re:\s/, '');
         document.querySelector('#compose-body').value = 'On ' +
-          `${response.timestamp} ${response.sender} wrote:\n"${response.body}"`;
+          `${response.timestamp} ${response.sender} wrote: "${response.body}"`;
       })
   } else {
     // Clear out composition fields
@@ -193,7 +199,7 @@ function create_fullEmail_element(result) {
   </div>
   <div class="div-body">${sanitize(result.body)}</div>
   <div class="email-btn mt-3">
-    ${result.archived ? '' : `<button class="btn btn-outline-secondary btn-sm"
+    ${(result.archived) ? '' : `<button class="btn btn-outline-secondary btn-sm"
     onClick="compose_email(${result.id})">
     Reply</button>`}
     <button class="archive-btn btn btn-outline-secondary btn-sm"
