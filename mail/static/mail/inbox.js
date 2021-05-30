@@ -195,6 +195,13 @@ function show_email(id) {
 }
 
 function create_fullEmail_element(result) {
+  // Verify if it's an email that was sent by the user
+  user_email = document.querySelector('#user-email').innerText;
+  const recipient_address = result.sender
+  let sent = false
+  if (user_email === result.sender) sent = true;
+
+  // Create email
   div_show_email = document.querySelector('#show-email')
   div_show_email.innerHTML = ''
 
@@ -208,15 +215,19 @@ function create_fullEmail_element(result) {
   <div class="div-email-subject">
     <span>${sanitize(result.subject)}</span>
   </div>
-  <div class="div-body">${sanitize(result.body)}</div>
+  <div class="div-body">${sanitize(result.body).replace(/\n/g, "<br/>")}</div>
   <div class="email-btn mt-3">
+
     ${(result.archived) ? '' :
-      `<button class="reply btn btn-outline-secondary btn-sm"
+      `<button class="reply btn btn-light btn-sm"
       onClick="compose_email(${result.id})">Reply</button>`}
-    <button class="archive-btn btn btn-outline-secondary btn-sm"
+
+    ${sent ? '' : `
+    <button class="archive-btn btn btn-light btn-sm"
       onClick="archive(${result.archived}, ${result.id})">
       ${result.archived ? 'Unarchive' : 'Archive'}
-    </button>
+    </button>`}
+
   </div>
   `;
 
