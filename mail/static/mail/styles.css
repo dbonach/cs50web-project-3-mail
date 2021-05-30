@@ -57,6 +57,7 @@ header p {
 header p span {
   margin-left: 0.25rem;
   font-style: italic;
+  font-size: 0.875rem;
 }
 
 input[type=submit] {
