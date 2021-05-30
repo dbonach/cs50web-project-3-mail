@@ -21,6 +21,7 @@ textarea {
 h1 {
   font-family: "ZCOOL KuaiLe", cursive, sans-serif;
   margin-bottom: 4rem;
+  min-width: max-content;
 }
 
 h5 {
@@ -35,9 +36,11 @@ header {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  min-width: fit-content;
 }
 header nav {
   flex-shrink: 0;
+  min-width: max-content;
 }
 header nav .btn {
   color: #000;
@@ -140,6 +143,11 @@ input[type=submit] {
 }
 #show-email .archive-btn {
   margin-left: auto;
+}
+
+#emails-view {
+  margin-bottom: 1.5rem;
+  min-width: max-content;
 }
 
 /*# sourceMappingURL=styles.css.map */
