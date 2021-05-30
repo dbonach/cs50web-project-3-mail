@@ -2,8 +2,29 @@ textarea {
   min-height: 400px;
 }
 
+#login, #register {
+  width: 40vw;
+  min-width: 400px;
+  margin: 4rem auto 1rem auto;
+
+  h3 {
+    color: #555;
+  }
+
+  input:focus {
+    border-color: #aaa;
+    box-shadow: none;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+  
+}
+
 h1 {
   font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+  margin-bottom: 4rem;
 }
 
 h5 {
@@ -23,7 +44,8 @@ header {
     flex-shrink: 0;
     .btn {
       color: #000;
-      background-color: #fff1c7;
+      // background-color: #fff1c7;
+      border-color: transparent;
     }
   }
   p {
