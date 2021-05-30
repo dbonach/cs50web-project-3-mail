@@ -2,13 +2,17 @@
 {% load static %}
 
 {% block body %}
-<h2 id="user-email">{{ request.user.email }}</h2>
-
-<button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
-<button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
-<button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
-<button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>
-<a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
+<h1 class="mt-2 mb-4">Email Client</h1>
+<header>
+    <nav>
+        <button class="btn btn-sm btn-outline-warning" id="inbox">Inbox</button>
+        <button class="btn btn-sm btn-outline-warning" id="compose">Compose</button>
+        <button class="btn btn-sm btn-outline-warning" id="sent">Sent</button>
+        <button class="btn btn-sm btn-outline-warning" id="archived">Archived</button>
+        <a class="btn btn-sm btn-outline-warning" href="{% url 'logout' %}">Log Out</a>
+    </nav>
+    <p>Logged in as: <span id="user-email">{{ request.user.email }}</span></p>
+</header>
 <hr>
 
 <div role="alert"></div>
@@ -20,7 +24,7 @@
 </div>
 
 <div id="compose-view">
-    <h3>New Email</h3>
+    <h5>New Email</h5>
     <form id="compose-form">
         <div class="form-group">
             From: <input disabled class="form-control" value="{{ request.user.email }}">
@@ -32,7 +36,7 @@
             <input class="form-control" id="compose-subject" placeholder="Subject">
         </div>
         <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
-        <input type="submit" class="btn btn-primary" />
+        <input type="submit" class="btn btn-warning" />
     </form>
 </div>
 

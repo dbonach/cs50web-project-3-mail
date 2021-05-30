@@ -31,7 +31,8 @@ function compose_email(email_id = null) {
         document.querySelector('#compose-subject').value = 'Re: ' +
           response.subject.replace(/^Re:\s/, '');
         document.querySelector('#compose-body').value = 'On ' +
-          `${response.timestamp} ${response.sender} wrote: "${response.body}"`;
+          `${response.timestamp} ${response.sender} wrote: "${response.body}"` +
+          '\n\n';
       })
   } else {
     // Clear out composition fields
@@ -58,7 +59,7 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML =
-    `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+    `<h5>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h5>`;
 
   // Show all emails to the DOM
   fetch(`/emails/${mailbox}`)
@@ -210,7 +211,7 @@ function create_fullEmail_element(result) {
   <div class="div-body">${sanitize(result.body)}</div>
   <div class="email-btn mt-3">
     ${(result.archived) ? '' :
-      `<button class="btn btn-outline-secondary btn-sm"
+      `<button class="reply btn btn-outline-secondary btn-sm"
       onClick="compose_email(${result.id})">Reply</button>`}
     <button class="archive-btn btn btn-outline-secondary btn-sm"
       onClick="archive(${result.archived}, ${result.id})">

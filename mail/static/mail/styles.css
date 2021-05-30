@@ -2,27 +2,72 @@ textarea {
   min-height: 400px;
 }
 
+h1 {
+  font-family: "ZCOOL KuaiLe", cursive, sans-serif;
+}
+
+h5 {
+  border: 1px solid #bbb;
+  padding: 4px;
+  border-radius: 2px;
+  background-color: beige;
+  margin-bottom: 1.5rem;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+header nav {
+  flex-shrink: 0;
+}
+header nav .btn {
+  color: #000;
+  background-color: #fff1c7;
+}
+header p {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  margin: 0 0 0 auto;
+  flex-shrink: 0;
+  color: #777;
+}
+header p span {
+  margin-left: 0.25rem;
+  font-style: italic;
+}
+
+input[type=submit] {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
 .email-line {
   border-bottom: 1px solid #ddd;
   padding: 4px;
   display: flex;
   align-items: center;
-  min-width: 200px;
+  min-width: max-content;
 }
 .email-line .span-sender {
   font-weight: bold;
   display: inline-block;
   min-width: 6rem;
+  flex-shrink: 0;
 }
 .email-line .span-subject {
   margin-left: 1rem;
+  margin-right: 1rem;
+  flex-shrink: 0;
 }
 
 .span-timestamp {
   font-size: 0.75rem;
   margin-left: auto;
-  min-width: fit-content;
   color: #555;
+  flex-shrink: 0;
 }
 
 .email-line:hover {
@@ -46,6 +91,8 @@ textarea {
   border-radius: 4px;
   padding: 6px;
   border-color: darkkhaki;
+  min-width: fit-content;
+  margin-top: 2rem;
 }
 #show-email .div_email {
   display: flex;
@@ -53,6 +100,7 @@ textarea {
 }
 #show-email .email-info {
   display: flex;
+  flex-wrap: wrap;
 }
 #show-email .email-sender {
   font-size: 0.75rem;
@@ -69,6 +117,9 @@ textarea {
 }
 #show-email .email-btn {
   display: flex;
+}
+#show-email .email-btn .reply {
+  margin-right: 1rem;
 }
 #show-email .archive-btn {
   margin-left: auto;
