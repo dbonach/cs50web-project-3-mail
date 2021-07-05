@@ -32,5 +32,5 @@ You can create a user or login with user `foo@example.com` and password `1234`.
 <br/>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/62313672/124433011-a163fb00-dd48-11eb-8d6e-c8f23f625dfb.gif" width="60%">
+  <img src="https://user-images.githubusercontent.com/62313672/124433011-a163fb00-dd48-11eb-8d6e-c8f23f625dfb.gif" width="80%">
 </p>
