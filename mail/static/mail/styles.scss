@@ -81,6 +81,7 @@ input[type='submit'] {
   display: flex;
   align-items: center;
   min-width: max-content;
+  background-color: #eee;
 
   .span-sender {
     font-weight: bold;
@@ -112,11 +113,11 @@ input[type='submit'] {
 }
 
 .unread {
-  background-color: #eee;
+  background-color: #fff;
 }
 
 .unread:hover {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #fff;
 }
 
 #show-email {
